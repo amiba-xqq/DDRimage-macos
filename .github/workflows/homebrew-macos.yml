@@ -1,0 +1,41 @@
+name: Homebrew macOS validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Formula/**"
+      - "dist/**"
+      - ".github/workflows/homebrew-macos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-13, macos-14]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show platform
+        run: |
+          sw_vers
+          uname -m
+          brew --version
+      - name: Install DDRimage formula
+        run: brew install --build-from-source ./Formula/ddrimage.rb
+      - name: Verify runtime and source
+        run: |
+          prefix="$(brew --prefix ddrimage)"
+          python="$prefix/libexec/environment/bin/python"
+          "$python" -m py_compile "$prefix/libexec/app/main.py" "$prefix/libexec/app/runner.py" "$prefix"/libexec/app/analysis/*.py
+          "$python" -c "import PySide6,numpy,scipy,pandas,matplotlib,PIL,tifffile,skimage,cv2,liffile; print('DDRimage Homebrew runtime OK')"
+      - name: Run formula test
+        run: brew test ddrimage
+
+
