@@ -27,8 +27,10 @@ jobs:
           sw_vers
           uname -m
           brew --version
+      - name: Add DDRimage tap
+        run: brew tap amiba-xqq/ddrimage https://github.com/amiba-xqq/DDRimage
       - name: Install DDRimage formula
-        run: brew install --build-from-source ./Formula/ddrimage.rb
+        run: brew install --build-from-source amiba-xqq/ddrimage/ddrimage
       - name: Verify runtime and source
         run: |
           prefix="$(brew --prefix ddrimage)"
@@ -36,6 +38,5 @@ jobs:
           "$python" -m py_compile "$prefix/libexec/app/main.py" "$prefix/libexec/app/runner.py" "$prefix"/libexec/app/analysis/*.py
           "$python" -c "import PySide6,numpy,scipy,pandas,matplotlib,PIL,tifffile,skimage,cv2,liffile; print('DDRimage Homebrew runtime OK')"
       - name: Run formula test
-        run: brew test ddrimage
-
+        run: brew test amiba-xqq/ddrimage/ddrimage
 
