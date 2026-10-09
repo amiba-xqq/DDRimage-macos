@@ -59,7 +59,7 @@ brew tap amiba-xqq/ddrimage-macos https://github.com/amiba-xqq/DDRimage-macos
 
 此步骤只需在第一次安装时执行一次。
 
-### 4.授予 DDRimage Formula 许可
+### 4. 授予 DDRimage Formula 许可
 
 Homebrew 6 及以上版本默认不信任第三方 tap。仅授权 DDRimage 这个 Formula：
 
