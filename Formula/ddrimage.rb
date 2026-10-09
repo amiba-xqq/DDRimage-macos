@@ -1,7 +1,7 @@
 class Ddrimage < Formula
   desc "Desktop workflows for immunofluorescence and DNA-fiber image analysis"
-  homepage "https://github.com/amiba-xqq/DDRimage"
-  url "https://raw.githubusercontent.com/amiba-xqq/DDRimage/main/dist/ddrimage-source-v1.0.1.zip"
+  homepage "https://github.com/amiba-xqq/DDRimage-macos"
+  url "https://raw.githubusercontent.com/amiba-xqq/DDRimage-macos/main/dist/ddrimage-source-v1.0.1.zip"
   version "1.0.1"
   sha256 "8f3f6e2ab3fff05211c71819b42e58d6df0915d6604154b82c6ab831e4ddf750"
 
