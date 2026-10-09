@@ -1,9 +1,9 @@
 class Ddrimage < Formula
   desc "Desktop workflows for immunofluorescence and DNA-fiber image analysis"
   homepage "https://github.com/amiba-xqq/DDRimage"
-  url "https://raw.githubusercontent.com/amiba-xqq/DDRimage/main/dist/ddrimage-source-v1.0.0.zip"
-  version "1.0.0"
-  sha256 "dfe33f259853f76a8264e885aa6d55860fd1200a50e3cd56c40e53b618fae15f"
+  url "https://raw.githubusercontent.com/amiba-xqq/DDRimage/main/dist/ddrimage-source-v1.0.1.zip"
+  version "1.0.1"
+  sha256 "8f3f6e2ab3fff05211c71819b42e58d6df0915d6604154b82c6ab831e4ddf750"
 
   on_arm do
     resource "miniforge" do
@@ -39,6 +39,11 @@ class Ddrimage < Formula
       export DDRIMAGE_DATA_DIR="$data_root"
       export MPLCONFIGDIR="$data_root/matplotlib"
       export PYTHONUTF8=1
+      unset QT_PLUGIN_PATH QML2_IMPORT_PATH QML_IMPORT_PATH QT_QPA_PLATFORMTHEME
+      pyside_root="#{environment_root}/lib/python3.12/site-packages/PySide6"
+      export QT_QPA_PLATFORM=cocoa
+      export QT_PLUGIN_PATH="$pyside_root/Qt/plugins"
+      export QT_QPA_PLATFORM_PLUGIN_PATH="$pyside_root/Qt/plugins/platforms"
       exec "#{environment_root}/bin/python" "#{libexec}/app/main.py" "$@"
     SH
     chmod 0755, bin/"ddrimage"
@@ -58,6 +63,16 @@ class Ddrimage < Formula
     python = libexec/"environment/bin/python"
     assert_match "DDRimage runtime OK", shell_output(
       "#{python} -c \"import PySide6,numpy,scipy,pandas,matplotlib,PIL,tifffile,skimage,cv2,liffile; print('DDRimage runtime OK')\"",
+    )
+    pyside_root = libexec/"environment/lib/python3.12/site-packages/PySide6"
+    ENV.delete "QT_PLUGIN_PATH"
+    ENV.delete "QML2_IMPORT_PATH"
+    ENV.delete "QML_IMPORT_PATH"
+    ENV["QT_QPA_PLATFORM"] = "cocoa"
+    ENV["QT_PLUGIN_PATH"] = pyside_root/"Qt/plugins"
+    ENV["QT_QPA_PLATFORM_PLUGIN_PATH"] = pyside_root/"Qt/plugins/platforms"
+    assert_match "Qt Cocoa OK", shell_output(
+      "#{python} -c \"from PySide6.QtWidgets import QApplication; app=QApplication([]); print('Qt Cocoa OK')\"",
     )
   end
 end

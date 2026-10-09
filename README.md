@@ -19,11 +19,20 @@ ddrimage
 
 首次安装需要下载 Python 3.12 与图像分析依赖，建议预留至少 4 GB 磁盘空间。安装程序优先使用清华镜像，失败后切换至官方源。运行环境由 Homebrew 保存在 DDRimage 的安装目录内，不会修改系统 Python。
 
+从 1.0.1 版开始，安装程序会按 macOS 版本选择兼容的 Qt/PySide6，并在启动时固定使用 DDRimage 自带的 Cocoa 平台插件，以避免系统或其他 Python 环境中的 Qt 设置发生冲突。
+
 ## 更新与卸载
 
 ```bash
 brew update
 brew upgrade ddrimage
+```
+
+若曾安装 1.0.0 且 Homebrew 没有自动重装，可执行：
+
+```bash
+brew update
+brew reinstall ddrimage
 ```
 
 卸载程序：
@@ -50,3 +59,4 @@ brew untap amiba-xqq/ddrimage
 5. 单克隆形成实验统计
 
 分析步骤可能清理所选输入子文件夹中的旧 CSV 和对应结果 TIFF。重要结果请提前备份。
+
